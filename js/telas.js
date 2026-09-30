@@ -46,7 +46,10 @@ App.telas = (function () {
           <a class="btn btn-primary" href="#/cadastro">Quero participar</a>
         </div>
         <div class="col-12 col-md-5">
-          <img class="img-fluid rounded" src="../img/imagem-ong.jpg" alt="Voluntários plantando mudas na horta comunitária." width="600" height="300">
+          <picture>
+            <source srcset="../img/imagem-ong.webp" type="image/webp">
+            <img class="img-fluid rounded" src="../img/imagem-ong.jpg" alt="Voluntários plantando mudas na horta comunitária." width="600" height="300" decoding="async">
+          </picture>
         </div>
       </div>
 
@@ -64,35 +67,35 @@ App.telas = (function () {
 
           <div class="mb-3">
             <label class="form-label" for="nome">Nome completo: *</label>
-            <input class="form-control" type="text" id="nome" maxlength="80" autocomplete="name" required minlength="3">
-            <div class="invalid-feedback"></div>
+            <input class="form-control" type="text" id="nome" maxlength="80" autocomplete="name" required minlength="3" aria-describedby="nome-erro">
+            <div class="invalid-feedback" id="nome-erro"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="email">E-mail: *</label>
-              <input class="form-control" type="email" id="email" autocomplete="email" required>
-              <div class="invalid-feedback"></div>
+              <input class="form-control" type="email" id="email" autocomplete="email" required aria-describedby="email-erro">
+              <div class="invalid-feedback" id="email-erro"></div>
             </div>
 
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="telefone">Telefone com DDD: *</label>
-              <input class="form-control" type="tel" id="telefone" maxlength="15" placeholder="(83) 98765-4321" title="(00) 00000-0000" autocomplete="tel" required pattern="\\([0-9]{2}\\) [0-9]{4,5}-[0-9]{4}">
-              <div class="invalid-feedback"></div>
+              <input class="form-control" type="tel" id="telefone" maxlength="15" placeholder="(83) 98765-4321" title="(00) 00000-0000" autocomplete="tel" required pattern="\\([0-9]{2}\\) [0-9]{4,5}-[0-9]{4}" aria-describedby="telefone-erro">
+              <div class="invalid-feedback" id="telefone-erro"></div>
             </div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="cpf">CPF: *</label>
-              <input class="form-control" type="text" id="cpf" maxlength="14" placeholder="000.000.000-00" title="000.000.000-00" required pattern="[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}">
-              <div class="invalid-feedback"></div>
+              <input class="form-control" type="text" id="cpf" maxlength="14" placeholder="000.000.000-00" title="000.000.000-00" required pattern="[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}-[0-9]{2}" aria-describedby="cpf-erro">
+              <div class="invalid-feedback" id="cpf-erro"></div>
             </div>
 
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="cidade">Cidade: *</label>
-              <input class="form-control" type="text" id="cidade" maxlength="60" autocomplete="address-level2" required>
-              <div class="invalid-feedback"></div>
+              <input class="form-control" type="text" id="cidade" maxlength="60" autocomplete="address-level2" required aria-describedby="cidade-erro">
+              <div class="invalid-feedback" id="cidade-erro"></div>
             </div>
           </div>
         </fieldset>
@@ -103,32 +106,32 @@ App.telas = (function () {
           <div class="row">
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="participacao">Tipo de participação: *</label>
-              <select class="form-select" id="participacao" required>
+              <select class="form-select" id="participacao" required aria-describedby="participacao-erro">
                 <option value="">Selecione</option>
                 <option>Voluntário(a)</option>
                 <option>Doador(a)</option>
                 <option>Voluntário(a) e doador(a)</option>
               </select>
-              <div class="invalid-feedback"></div>
+              <div class="invalid-feedback" id="participacao-erro"></div>
             </div>
 
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="area">Área de interesse: *</label>
-              <select class="form-select" id="area" required>
+              <select class="form-select" id="area" required aria-describedby="area-erro">
                 <option value="">Selecione</option>
                 <option>Educação</option>
                 <option>Saúde</option>
                 <option>Meio ambiente</option>
                 <option>Administrativo</option>
               </select>
-              <div class="invalid-feedback"></div>
+              <div class="invalid-feedback" id="area-erro"></div>
             </div>
           </div>
 
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="termos" required>
+            <input class="form-check-input" type="checkbox" id="termos" required aria-describedby="termos-erro">
             <label class="form-check-label" for="termos">Autorizo o uso dos meus dados para contato (LGPD). *</label>
-            <div class="invalid-feedback"></div>
+            <div class="invalid-feedback" id="termos-erro"></div>
           </div>
         </fieldset>
 

@@ -12,6 +12,10 @@ App.app = (function () {
 
   var conteudo;
   var toast;
+  var botaoTema;
+
+  /* Chave onde a escolha do tema fica guardada */
+  var CHAVE_TEMA = "sementes:tema";
 
   /* Cada rota tem o título da aba, a função de telas.js que devolve o HTML
      e, quando precisa, uma função que liga os eventos da tela. */
@@ -99,6 +103,44 @@ App.app = (function () {
     });
   }
 
+  /* ---------- tema claro e escuro ---------- */
+
+  /* A escolha salva vale mais que a preferência do sistema */
+  function temaInicial() {
+    var salvo = null;
+
+    try { salvo = window.localStorage.getItem(CHAVE_TEMA); } catch (erro) { salvo = null; }
+
+    if (salvo === "claro" || salvo === "escuro") { return salvo; }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "escuro" : "claro";
+  }
+
+  /* O Bootstrap troca as variáveis dos componentes pelo data-bs-theme */
+  function aplicarTema(tema) {
+    var escuro = tema === "escuro";
+
+    document.documentElement.setAttribute("data-bs-theme", escuro ? "dark" : "light");
+    botaoTema.setAttribute("aria-pressed", String(escuro));
+    botaoTema.textContent = escuro ? "Modo claro" : "Modo escuro";
+  }
+
+  function ligarTema() {
+    botaoTema = document.getElementById("botao-tema");
+
+    aplicarTema(temaInicial());
+
+    botaoTema.addEventListener("click", function () {
+      var escuro = document.documentElement.getAttribute("data-bs-theme") === "dark";
+      var novo = escuro ? "claro" : "escuro";
+
+      aplicarTema(novo);
+      avisar(novo === "escuro" ? "Tema escuro ativado." : "Tema claro ativado.");
+
+      try { window.localStorage.setItem(CHAVE_TEMA, novo); } catch (erro) { /* sem storage, vale só nesta visita */ }
+    });
+  }
+
   /* ---------- eventos de cada tela ---------- */
 
   function ligarFormulario() {
@@ -148,6 +190,8 @@ App.app = (function () {
   function iniciar() {
     conteudo = document.getElementById("app");
     toast = bootstrap.Toast.getOrCreateInstance(document.getElementById("toast"));
+
+    ligarTema();
 
     window.addEventListener("hashchange", renderizar);
 
