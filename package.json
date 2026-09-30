@@ -1,0 +1,17 @@
+{
+  "name": "college-frontend-1",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SPA do Instituto Sementes do Amanhã - disciplina de Desenvolvimento Front-end",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node testes/verificar.mjs",
+    "a11y": "node testes/acessibilidade.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "^4.10.2",
+    "esbuild": "^0.25.0"
+  }
+}
