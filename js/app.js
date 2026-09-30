@@ -65,6 +65,7 @@ App.app = (function () {
       conteudo.innerHTML = App.telas.naoEncontrado(caminho);
       document.title = "Página não encontrada";
       marcarLink(null);
+      conteudo.focus();
       return;
     }
 
@@ -75,14 +76,26 @@ App.app = (function () {
     document.title = rota.titulo + " | Sementes do Amanhã";
     marcarLink(caminho);
     window.scrollTo(0, 0);
+
+    /* Leva o foco (e o leitor de tela) para o conteudo novo */
+    conteudo.focus();
   }
 
-  /* Marca no menu o link da tela que está aberta */
+  /* Marca no menu o link da tela que está aberta: a classe dá o visual e o
+     aria-current avisa quem usa leitor de tela (WCAG 4.1.2) */
   function marcarLink(caminho) {
     var links = document.querySelectorAll(".navbar-nav .nav-link");
 
     Array.prototype.forEach.call(links, function (link) {
-      link.classList.toggle("active", link.getAttribute("href") === "#" + caminho);
+      var ativo = link.getAttribute("href") === "#" + caminho;
+
+      link.classList.toggle("active", ativo);
+
+      if (ativo) {
+        link.setAttribute("aria-current", "page");
+      } else {
+        link.removeAttribute("aria-current");
+      }
     });
   }
 

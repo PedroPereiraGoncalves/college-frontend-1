@@ -64,20 +64,20 @@ App.telas = (function () {
 
           <div class="mb-3">
             <label class="form-label" for="nome">Nome completo: *</label>
-            <input class="form-control" type="text" id="nome" maxlength="80" required minlength="3">
+            <input class="form-control" type="text" id="nome" maxlength="80" autocomplete="name" required minlength="3">
             <div class="invalid-feedback"></div>
           </div>
 
           <div class="row">
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="email">E-mail: *</label>
-              <input class="form-control" type="email" id="email" required>
+              <input class="form-control" type="email" id="email" autocomplete="email" required>
               <div class="invalid-feedback"></div>
             </div>
 
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="telefone">Telefone com DDD: *</label>
-              <input class="form-control" type="tel" id="telefone" maxlength="15" placeholder="(83) 98765-4321" title="(00) 00000-0000" required pattern="\\([0-9]{2}\\) [0-9]{4,5}-[0-9]{4}">
+              <input class="form-control" type="tel" id="telefone" maxlength="15" placeholder="(83) 98765-4321" title="(00) 00000-0000" autocomplete="tel" required pattern="\\([0-9]{2}\\) [0-9]{4,5}-[0-9]{4}">
               <div class="invalid-feedback"></div>
             </div>
           </div>
@@ -91,7 +91,7 @@ App.telas = (function () {
 
             <div class="col-12 col-md-6 mb-3">
               <label class="form-label" for="cidade">Cidade: *</label>
-              <input class="form-control" type="text" id="cidade" maxlength="60" required>
+              <input class="form-control" type="text" id="cidade" maxlength="60" autocomplete="address-level2" required>
               <div class="invalid-feedback"></div>
             </div>
           </div>

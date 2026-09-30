@@ -9,9 +9,12 @@
 </head>
 <body>
 
+  <!-- Primeiro elemento focavel da pagina: aparece no primeiro Tab (WCAG 2.4.1) -->
+  <a class="pular-navegacao" href="#app">Pular para o conteúdo principal</a>
+
   <header>
     <!-- Barra do Bootstrap: no celular o proprio Bootstrap abre o menu -->
-    <nav class="navbar navbar-expand-md navbar-dark bg-verde">
+    <nav class="navbar navbar-expand-md navbar-dark bg-verde" aria-label="Navegação principal">
       <div class="container">
         <a class="navbar-brand" href="#/inicio">Sementes do Amanhã</a>
 
@@ -31,7 +34,8 @@
   </header>
 
   <!-- O conteudo de cada tela entra aqui pelo JavaScript -->
-  <main id="app" class="container py-4"></main>
+  <!-- tabindex="-1" permite receber o foco depois da troca de tela (WCAG 2.4.3) -->
+  <main id="app" class="container py-4" tabindex="-1"></main>
 
   <footer class="bg-verde text-white py-3">
     <div class="container">Trabalho acadêmico de Desenvolvimento Front-end - 2025</div>

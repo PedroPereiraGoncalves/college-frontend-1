@@ -21,6 +21,12 @@
 
 .bg-verde {
   background-color: var(--verde);
+
+  /* Contraste: o navbar-dark do Bootstrap deixa os links em branco a 55%,
+     que sobre este verde dá 3,12:1. Em branco puro sobe para 6,4:1 (WCAG 1.4.3). */
+  --bs-navbar-color: #fff;
+  --bs-navbar-hover-color: #fff;
+  --bs-navbar-active-color: #fff;
 }
 
 h1,
@@ -35,6 +41,40 @@ h2 {
   --bs-btn-hover-border-color: #17573a;
   --bs-btn-active-bg: #14492f;
   --bs-btn-focus-shadow-rgb: 28, 107, 71;
+}
+
+/* O cinza padrão do Bootstrap fica em 4,45:1 sobre o fundo areia, abaixo do
+   4,5:1 exigido. Com o verde da paleta a razão sobe para 6,4:1. */
+.btn-outline-secondary {
+  --bs-btn-color: var(--verde);
+  --bs-btn-border-color: var(--verde);
+  --bs-btn-hover-bg: var(--verde);
+  --bs-btn-hover-border-color: var(--verde);
+  --bs-btn-active-bg: var(--verde);
+  --bs-btn-active-border-color: var(--verde);
+  --bs-btn-focus-shadow-rgb: 28, 107, 71;
+}
+
+/* Fica fora da tela e aparece quando recebe foco pelo teclado */
+.pular-navegacao {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1100;
+  padding: 0.5rem 1rem;
+  background-color: var(--verde);
+  color: #fff;
+}
+
+.pular-navegacao:focus {
+  left: 0;
+}
+
+/* O conteudo recebe foco a cada troca de tela; o contorno aparece so quando
+   a navegacao veio do teclado, para nao poluir quem usa o mouse. */
+#app:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 0.25rem;
 }
 
 fieldset {
