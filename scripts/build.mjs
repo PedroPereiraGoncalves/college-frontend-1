@@ -16,6 +16,10 @@ const dist = path.join(raiz, "dist");
 
 const MODULOS = ["dados", "telas", "formulario", "app"];
 
+/* Arquivo temporário que importa os módulos na ordem de carregamento, para o
+   esbuild agrupar tudo em um único arquivo minificado. */
+const ENTRADA = ".entrada-build.js";
+
 const relatorio = [];
 
 function tamanho(texto) {
@@ -46,12 +50,22 @@ function ajustarHtml(html) {
     ['src="../js/bootstrap.bundle.min.js"', 'src="js/bootstrap.bundle.min.js"']
   ];
 
+  /* Os quatro scripts viram um só no dist */
   MODULOS.forEach(function (nome) {
-    trocas.push([
-      'src="../js/' + nome + '.js"',
-      'src="js/' + nome + '.min.js"'
-    ]);
+    const tag = '  <script src="../js/' + nome + '.js" defer></script>\n';
+
+    if (!html.includes(tag)) {
+      throw new Error("tag de script não encontrada: " + tag.trim());
+    }
+
+    html = html.replace(tag, "");
   });
+
+  /* O bootstrap já foi reescrito acima; aqui entra o bundle dos módulos */
+  trocas.push([
+    '<script src="js/bootstrap.bundle.min.js" defer></script>',
+    '<script src="js/bootstrap.bundle.min.js" defer></script>\n  <script src="js/app.min.js" defer></script>'
+  ]);
 
   trocas.forEach(function (par) {
     if (!html.includes(par[0])) {
@@ -74,18 +88,32 @@ const cssMinificado = await minificar("css/style.css");
 await writeFile(path.join(dist, "css/style.min.css"), cssMinificado);
 relatorio.push(["css/style.css", "css/style.min.css", tamanho(cssOriginal), tamanho(cssMinificado), tamanho(gzipSync(cssMinificado))]);
 
-/* ---------- JavaScript ---------- */
-for (const nome of MODULOS) {
-  const original = await readFile(path.join(raiz, "js/" + nome + ".js"), "utf8");
-  let minificado = await minificar("js/" + nome + ".js");
+/* ---------- JavaScript: um arquivo só ---------- */
+const fontes = await Promise.all(MODULOS.map((nome) => readFile(path.join(raiz, "js/" + nome + ".js"), "utf8")));
+const codigoOriginal = fontes.join("\n");
 
-  /* As imagens ficam um nível acima do script em desenvolvimento; no dist
-     os dois estão na raiz do site. */
-  minificado = minificado.replaceAll('"../img/', '"img/');
+await writeFile(
+  path.join(raiz, ENTRADA),
+  MODULOS.map((nome) => 'import "./js/' + nome + '.js";').join("\n") + "\n"
+);
 
-  await writeFile(path.join(dist, "js/" + nome + ".min.js"), minificado);
-  relatorio.push(["js/" + nome + ".js", "js/" + nome + ".min.js", tamanho(original), tamanho(minificado), tamanho(gzipSync(minificado))]);
-}
+const agrupado = await build({
+  entryPoints: [path.join(raiz, ENTRADA)],
+  bundle: true,
+  minify: true,
+  write: false,
+  format: "iife",
+  target: ["es2019"]
+});
+
+await rm(path.join(raiz, ENTRADA), { force: true });
+
+/* As imagens ficam um nível acima do script em desenvolvimento; no dist os
+   dois estão na raiz do site. */
+const jsMinificado = agrupado.outputFiles[0].text.replaceAll('"../img/', '"img/');
+
+await writeFile(path.join(dist, "js/app.min.js"), jsMinificado);
+relatorio.push(["js/ (4 módulos)", "js/app.min.js", tamanho(codigoOriginal), tamanho(jsMinificado), tamanho(gzipSync(jsMinificado))]);
 
 /* ---------- arquivos copiados ---------- */
 await cp(path.join(raiz, "css/bootstrap.min.css"), path.join(dist, "css/bootstrap.min.css"));

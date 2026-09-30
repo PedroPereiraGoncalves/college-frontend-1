@@ -107,18 +107,17 @@ python3 -m http.server 8000
 npm run build
 ```
 
-O script `scripts/build.mjs` faz três coisas: minifica o CSS do tema e os quatro módulos JavaScript com o esbuild, copia o Bootstrap e a imagem, e reescreve os caminhos do `index.html` (que em desenvolvimento saem de `html/` com `../`). O resultado vai para `dist/`, pronta para publicar.
+O script `scripts/build.mjs` faz três coisas: minifica o CSS do tema e **agrupa os quatro módulos JavaScript num arquivo só** com o esbuild, copia o Bootstrap e a imagem, e reescreve os caminhos do `index.html` (que em desenvolvimento saem de `html/` com `../`). O resultado vai para `dist/`, pronta para publicar, e o documento passa a carregar **um** script do projeto em vez de quatro.
 
 Saída do build neste projeto:
 
 ```
-css/style.css      2,4 KB -> 1,3 KB
-js/dados.js        2,0 KB -> 1,0 KB
-js/telas.js        7,4 KB -> 6,2 KB
-js/formulario.js   5,0 KB -> 2,4 KB
-js/app.js          4,6 KB -> 2,2 KB
-total             21,4 KB -> 13,0 KB (39% menor, antes do gzip)
+css/style.css      3,6 KB ->  1,8 KB
+js/ (4 módulos)   21,2 KB -> 13,0 KB  (num arquivo só: js/app.min.js)
+total             24,8 KB -> 14,8 KB  (40% menor, antes do gzip)
 ```
+
+A imagem também é otimizada: vai em **WebP** (8,4 KB) com o JPG de reserva (24,8 KB) para navegadores antigos, servidos por `<picture>`.
 
 ## Testes
 
