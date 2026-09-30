@@ -35,6 +35,8 @@ As dependências apontam todas para o mesmo sentido — o `app.js` conhece os ou
 
 **Templates por template literal + `innerHTML`.** O HTML de cada componente fica em um lugar só, junto dos dados que o preenchem. Toda informação vinda do usuário passa por `escapar()`, que troca `&`, `<`, `>` e `"` pelas entidades — sem isso, um nome digitado como `<script>` viraria código na página.
 
+**Tema aplicado por atributo, não por classe.** O modo escuro usa o `data-bs-theme` no `<html>`, que é o mecanismo do próprio Bootstrap 5.3 para trocar as variáveis dos componentes. O projeto redefine a sua paleta dentro de `[data-bs-theme="dark"]`, e o JavaScript só troca o atributo e guarda a escolha. Aplicar o atributo num script do `<head>` evita o flash de tema errado na carga.
+
 **Só o que o usuário cria vai para o `localStorage`.** Os projetos são fixos no código, então não faz sentido persistir. O que é gravado é a lista de cadastros, sob a chave `sementes:cadastros`, em JSON.
 
 ## Como adicionar uma tela

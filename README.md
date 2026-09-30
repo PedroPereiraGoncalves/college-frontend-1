@@ -129,7 +129,7 @@ npm run a11y    # auditoria de acessibilidade com axe-core
 
 `npm test` roda o `testes/verificar.mjs` e confere: a sintaxe dos quatro módulos, se toda classe usada no HTML e nos templates tem estilo definido, se todo `getElementById` encontra o elemento, se os requisitos de acessibilidade já corrigidos continuam no lugar e se todos os campos do formulário têm rótulo e mensagem de erro.
 
-`npm run a11y` injeta o axe-core nas três telas dentro de um navegador headless e roda as regras de WCAG 2.1 níveis A e AA. Se o Chrome não estiver no caminho padrão, informe onde ele está:
+`npm run a11y` injeta o axe-core nas três telas, **nos dois temas**, dentro de um navegador headless, roda as regras de WCAG 2.1 níveis A e AA e ainda confere a ordem de foco. Se o Chrome não estiver no caminho padrão, informe onde ele está:
 
 ```bash
 CHROME=/usr/bin/google-chrome npm run a11y
@@ -145,7 +145,8 @@ O projeto segue as diretrizes **WCAG 2.1 nível AA**. O que está implementado:
 - `aria-current="page"` no link do menu correspondente à tela aberta (4.1.2);
 - rótulos em todos os campos, mensagens de erro abaixo de cada um e aviso em região viva (3.3.1, 4.1.3);
 - `autocomplete` nos campos, para identificar o propósito de cada um (1.3.5);
-- textos alternativos nas imagens e idioma declarado no documento.
+- textos alternativos nas imagens e idioma declarado no documento;
+- **tema claro e escuro**, com a escolha guardada no `localStorage`, a preferência do sistema respeitada na primeira visita e contraste AA verificado nos dois modos.
 
 O relatório completo da auditoria, com as razões de contraste medidas antes e depois, está em [`docs/ACESSIBILIDADE.md`](docs/ACESSIBILIDADE.md).
 

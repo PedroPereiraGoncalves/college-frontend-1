@@ -94,6 +94,12 @@ conferir("todo campo aponta para a sua mensagem", semDescricao.length === 0, sem
 conferir("campo invalido recebe aria-invalid", js.includes('setAttribute("aria-invalid"') && js.includes('removeAttribute("aria-invalid")'));
 conferir("aviso e lido por inteiro", /id="toast"[^>]*aria-atomic="true"/.test(html));
 
+console.log("\ntema");
+conferir("css define a paleta do modo escuro", /\[data-bs-theme="dark"\]/.test(css));
+conferir("botao de tema anuncia o estado", /id="botao-tema"[^>]*aria-pressed="/.test(html));
+conferir("tema aplicado antes da primeira pintura", html.indexOf("data-bs-theme") !== -1 && html.indexOf("data-bs-theme") < html.indexOf("</head>"));
+conferir("escolha do tema e persistida", js.includes("sementes:tema"));
+
 const obrigatorios = (telas.match(/ required/g) || []).length;
 conferir("campos obrigatorios marcados com required", obrigatorios >= 6, String(obrigatorios) + " campos");
 
