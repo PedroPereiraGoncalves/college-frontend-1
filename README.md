@@ -166,7 +166,9 @@ Histórico de releases e o passo a passo para contribuir estão em [`docs/VERSIO
 
 ## Publicação
 
-O deploy é contínuo: o workflow do GitHub Actions roda o build e publica a pasta `dist/` no GitHub Pages a cada push na `main` (issue [#5](https://github.com/PedroPereiraGoncalves/college-frontend-1/issues/5)). O endereço público é adicionado aqui assim que o workflow entrar.
+**https://pedropereiragoncalves.github.io/college-frontend-1/**
+
+O deploy é contínuo: a cada push na `main`, o workflow em `.github/workflows/pages.yml` instala as dependências, roda `npm test`, gera a `dist/` com `npm run build` e publica essa pasta no GitHub Pages. Se as verificações falharem, nada é publicado.
 
 ## Documentação adicional
 
