@@ -110,7 +110,12 @@ await rm(path.join(raiz, ENTRADA), { force: true });
 
 /* As imagens ficam um nível acima do script em desenvolvimento; no dist os
    dois estão na raiz do site. */
-const jsMinificado = agrupado.outputFiles[0].text.replaceAll('"../img/', '"img/');
+const jsMinificado = agrupado.outputFiles[0].text.replaceAll("../img/", "img/");
+
+/* Se sobrar caminho relativo ao html/, a imagem quebraria só em produção */
+if (jsMinificado.includes('"../')) {
+  throw new Error("sobrou caminho relativo ao html/ dentro do bundle");
+}
 
 await writeFile(path.join(dist, "js/app.min.js"), jsMinificado);
 relatorio.push(["js/ (4 módulos)", "js/app.min.js", tamanho(codigoOriginal), tamanho(jsMinificado), tamanho(gzipSync(jsMinificado))]);

@@ -76,6 +76,9 @@ conferir("aviso tem regiao viva", /id="toast"[^>]*aria-live=/.test(html));
 conferir("nenhum outline removido no css", !/outline:\s*none/.test(css));
 conferir("toda tela tem titulo de nivel 1", (telas.match(/<h1/g) || []).length >= 3, String((telas.match(/<h1/g) || []).length) + " h1");
 conferir("imagem tem texto alternativo", /<img[^>]*alt="[^"]+"/.test(telas));
+conferir("imagem tem formatos alternativos", /<picture>/.test(telas) && /type="image\/webp"/.test(telas));
+conferir("imagem tem larguras diferentes por tamanho", /srcset="[^"]*480w/.test(telas) && /sizes="/.test(telas));
+conferir("imagem declara as dimensoes para evitar salto de layout", /<img[^>]*width="800"[^>]*height="400"/.test(telas));
 conferir("link ativo usa aria-current", js.includes('aria-current'));
 conferir("campos identificam o proposito", (telas.match(/autocomplete="/g) || []).length >= 4);
 
