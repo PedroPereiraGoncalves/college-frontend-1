@@ -1,0 +1,54 @@
+/* ==========================================================================
+   Tema do Instituto Sementes do Amanhã por cima do Bootstrap
+   O Bootstrap traz o grid, os componentes e a responsividade.
+   Aqui fica só a paleta e alguns ajustes.
+   ========================================================================== */
+
+:root {
+  --verde: #1c6b47;
+  --areia: #fbf9f5;
+  --texto: #1f2422;
+  --borda: #dfe3e0;
+
+  /* Ponte com o Bootstrap: os componentes leem as cores daqui. */
+  --bs-primary: var(--verde);
+  --bs-primary-rgb: 28, 107, 71;
+  --bs-body-bg: var(--areia);
+  --bs-body-color: var(--texto);
+  --bs-link-color-rgb: 28, 107, 71;
+  --bs-border-radius: 0.5rem;
+}
+
+.bg-verde {
+  background-color: var(--verde);
+}
+
+h1,
+h2 {
+  color: var(--verde);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--verde);
+  --bs-btn-border-color: var(--verde);
+  --bs-btn-hover-bg: #17573a;
+  --bs-btn-hover-border-color: #17573a;
+  --bs-btn-active-bg: #14492f;
+  --bs-btn-focus-shadow-rgb: 28, 107, 71;
+}
+
+fieldset {
+  border: 1px solid var(--borda);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background-color: #fff;
+}
+
+legend {
+  float: none;
+  width: auto;
+  padding: 0 0.5rem;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  color: var(--verde);
+}

@@ -1,0 +1,12 @@
+# Dependências e resultado do build (gerados, não versionados)
+node_modules/
+dist/
+
+# Perfil temporário do navegador usado nos testes automatizados
+.chrome-perfil/
+
+# Sistema operacional e editor
+.DS_Store
+Thumbs.db
+.vscode/
+*.log

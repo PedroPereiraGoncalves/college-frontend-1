@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Área: APLICAÇÃO
+   O roteador da SPA. Ele lê o endereço depois do #, coloca a tela
+   correspondente dentro do <main> e liga os eventos daquela tela.
+   O menu e o aviso (toast) são componentes do Bootstrap.
+   É o último arquivo carregado.
+   ========================================================================== */
+window.App = window.App || {};
+
+App.app = (function () {
+  "use strict";
+
+  var conteudo;
+  var toast;
+
+  /* Cada rota tem o título da aba, a função de telas.js que devolve o HTML
+     e, quando precisa, uma função que liga os eventos da tela. */
+  var rotas = {
+    "/inicio": {
+      titulo: "Projetos",
+      tela: function () { return App.telas.inicio(); }
+    },
+    "/cadastro": {
+      titulo: "Quero participar",
+      tela: function () { return App.telas.cadastro(); },
+      depois: ligarFormulario
+    },
+    "/cadastros": {
+      titulo: "Cadastros salvos",
+      tela: function () { return App.telas.cadastros(App.dados.listarCadastros()); },
+      depois: ligarLista
+    }
+  };
+
+  /* ---------- componentes do Bootstrap ---------- */
+
+  /* Aviso rápido no canto da tela */
+  function avisar(mensagem) {
+    document.getElementById("toast-texto").textContent = mensagem;
+    toast.show();
+  }
+
+  /* Fecha o menu do celular. Quem abre é o próprio Bootstrap. */
+  function fecharMenu() {
+    var menu = document.getElementById("menu");
+
+    if (menu.classList.contains("show")) {
+      bootstrap.Collapse.getOrCreateInstance(menu).hide();
+    }
+  }
+
+  /* ---------- navegação ---------- */
+
+  function caminhoAtual() {
+    return window.location.hash.replace("#", "") || "/inicio";
+  }
+
+  function renderizar() {
+    var caminho = caminhoAtual();
+    var rota = rotas[caminho];
+
+    fecharMenu();
+
+    if (!rota) {
+      conteudo.innerHTML = App.telas.naoEncontrado(caminho);
+      document.title = "Página não encontrada";
+      marcarLink(null);
+      return;
+    }
+
+    conteudo.innerHTML = rota.tela();
+
+    if (rota.depois) { rota.depois(); }
+
+    document.title = rota.titulo + " | Sementes do Amanhã";
+    marcarLink(caminho);
+    window.scrollTo(0, 0);
+  }
+
+  /* Marca no menu o link da tela que está aberta */
+  function marcarLink(caminho) {
+    var links = document.querySelectorAll(".navbar-nav .nav-link");
+
+    Array.prototype.forEach.call(links, function (link) {
+      link.classList.toggle("active", link.getAttribute("href") === "#" + caminho);
+    });
+  }
+
+  /* ---------- eventos de cada tela ---------- */
+
+  function ligarFormulario() {
+    var formulario = document.getElementById("form-cadastro");
+
+    App.formulario.ligar();
+
+    formulario.addEventListener("submit", function (evento) {
+      evento.preventDefault();
+
+      var erros = App.formulario.validar();
+
+      if (erros.length > 0) {
+        erros[0].campo.focus();
+        avisar("Confira os " + erros.length + " campo(s) destacado(s).");
+        return;
+      }
+
+      App.dados.salvarCadastro(App.formulario.coletarDados());
+      avisar("Cadastro salvo!");
+      window.location.hash = "#/cadastros";
+    });
+
+    /* O botão Limpar também tira as marcas de erro */
+    formulario.addEventListener("reset", App.formulario.limpar);
+  }
+
+  function ligarLista() {
+    document.getElementById("limpar").addEventListener("click", function () {
+      App.dados.limparCadastros();
+      renderizar();
+      avisar("Todos os cadastros foram apagados.");
+    });
+
+    document.getElementById("lista-cadastros").addEventListener("click", function (evento) {
+      var botao = evento.target.closest("[data-remover]");
+      if (!botao) { return; }
+
+      App.dados.removerCadastro(botao.getAttribute("data-remover"));
+      renderizar();
+      avisar("Cadastro removido.");
+    });
+  }
+
+  /* ---------- início ---------- */
+
+  function iniciar() {
+    conteudo = document.getElementById("app");
+    toast = bootstrap.Toast.getOrCreateInstance(document.getElementById("toast"));
+
+    window.addEventListener("hashchange", renderizar);
+
+    document.getElementById("menu").addEventListener("click", function (evento) {
+      if (evento.target.closest("a")) { fecharMenu(); }
+    });
+
+    renderizar();
+  }
+
+  return {
+    iniciar: iniciar,
+    renderizar: renderizar,
+    avisar: avisar
+  };
+})();
+
+App.app.iniciar();
