@@ -113,11 +113,11 @@ Saída do build neste projeto:
 
 ```
 css/style.css      3,6 KB ->  1,8 KB
-js/ (4 módulos)   21,2 KB -> 13,0 KB  (num arquivo só: js/app.min.js)
-total             24,8 KB -> 14,8 KB  (40% menor, antes do gzip)
+js/ (4 módulos)   21,4 KB -> 13,2 KB  (num arquivo só: js/app.min.js)
+total             24,9 KB -> 15,0 KB  (40% menor, antes do gzip)
 ```
 
-A imagem também é otimizada: vai em **WebP** (8,4 KB) com o JPG de reserva (24,8 KB) para navegadores antigos, servidos por `<picture>`.
+A imagem também é otimizada: vai em **WebP** com o JPG de reserva para navegadores antigos, por `<picture>`, e em **duas larguras** (480 px e 800 px) escolhidas pelo `srcset` conforme o tamanho da tela. O arquivo maior tem 8,2 KB em WebP contra 24,2 KB do JPG.
 
 ## Testes
 

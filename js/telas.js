@@ -47,8 +47,8 @@ App.telas = (function () {
         </div>
         <div class="col-12 col-md-5">
           <picture>
-            <source srcset="../img/imagem-ong.webp" type="image/webp">
-            <img class="img-fluid rounded" src="../img/imagem-ong.jpg" alt="Voluntários plantando mudas na horta comunitária." width="600" height="300" decoding="async">
+            <source type="image/webp" srcset="../img/imagem-ong-480.webp 480w, ../img/imagem-ong.webp 800w" sizes="(max-width: 767px) 100vw, 40vw">
+            <img class="img-fluid rounded" src="../img/imagem-ong.jpg" srcset="../img/imagem-ong-480.jpg 480w, ../img/imagem-ong.jpg 800w" sizes="(max-width: 767px) 100vw, 40vw" alt="Voluntários plantando mudas na horta comunitária." width="800" height="400" decoding="async">
           </picture>
         </div>
       </div>
