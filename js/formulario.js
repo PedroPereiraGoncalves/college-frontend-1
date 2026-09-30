@@ -49,7 +49,7 @@ App.formulario = (function () {
     });
 
     formulario.addEventListener("input", function (evento) {
-      evento.target.classList.remove("is-invalid");
+      desmarcar(evento.target);
     });
   }
 
@@ -117,6 +117,7 @@ App.formulario = (function () {
   /* Pinta o campo de vermelho e escreve a mensagem logo abaixo dele */
   function marcar(campo, texto) {
     campo.classList.add("is-invalid");
+    campo.setAttribute("aria-invalid", "true");
 
     var aviso = campo.parentNode.querySelector(".invalid-feedback");
     if (aviso) { aviso.textContent = texto; }
@@ -124,16 +125,22 @@ App.formulario = (function () {
     return { campo: campo, mensagem: texto };
   }
 
+  /* Tira a marca de erro de um campo: a cor, o aviso e o estado para o leitor de tela */
+  function desmarcar(campo) {
+    if (!campo.classList) { return; }
+
+    campo.classList.remove("is-invalid");
+    campo.removeAttribute("aria-invalid");
+
+    var aviso = campo.parentNode.querySelector(".invalid-feedback");
+    if (aviso) { aviso.textContent = ""; }
+  }
+
   /* Tira as marcas de erro de todos os campos */
   function limpar() {
     var formulario = document.getElementById("form-cadastro");
 
-    Array.prototype.forEach.call(formulario.querySelectorAll(".is-invalid"), function (campo) {
-      campo.classList.remove("is-invalid");
-
-      var aviso = campo.parentNode.querySelector(".invalid-feedback");
-      if (aviso) { aviso.textContent = ""; }
-    });
+    Array.prototype.forEach.call(formulario.querySelectorAll(".is-invalid"), desmarcar);
   }
 
   /* Lê o formulário e devolve um objeto simples, pronto para ser gravado */

@@ -33,10 +33,10 @@ A primeira execução acusou duas falhas de contraste, as duas de nível AA (WCA
 | 2.4.1 Mecanismo de bypass | link "Pular para o conteúdo principal" como primeiro elemento focável |
 | 2.4.3 Ordem de foco | `main` com `tabindex="-1"` e foco movido a cada troca de rota |
 | 2.4.7 Foco visível | contorno aparece em `:focus-visible`, inclusive no contêiner |
-| 3.3.1 Identificação do erro | texto do erro abaixo de cada campo, além da borda vermelha |
+| 3.3.1 Identificação do erro | texto do erro abaixo de cada campo, ligado a ele por `aria-describedby` e `aria-invalid`, além da borda vermelha |
 | 3.3.2 Rótulos | `<label for>` em todos os campos, inclusive nos seletores |
 | 4.1.2 Nome, função e valor | `aria-current="page"` no link da tela aberta |
-| 4.1.3 Mensagens de status | toast com `role="status"` e `aria-live="polite"` |
+| 4.1.3 Mensagens de status | toast com `role="status"`, `aria-live="polite"` e `aria-atomic="true"` |
 
 O link de pular aparece no primeiro <kbd>Tab</kbd> e leva direto ao conteúdo — a captura `capturas/05-foco-teclado.png` mostra o estado.
 
