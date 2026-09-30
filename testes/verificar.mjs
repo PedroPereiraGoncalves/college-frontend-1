@@ -88,6 +88,12 @@ conferir("todo campo tem rotulo", semRotulo.length === 0, semRotulo.join(", "));
 const avisos = (telas.match(/class="invalid-feedback"/g) || []).length;
 conferir("todo campo tem aviso de erro", avisos === campos.length, avisos + " avisos para " + campos.length + " campos");
 
+const semDescricao = campos.filter((id) => !telas.includes('aria-describedby="' + id + '-erro"'));
+conferir("todo campo aponta para a sua mensagem", semDescricao.length === 0, semDescricao.join(", "));
+
+conferir("campo invalido recebe aria-invalid", js.includes('setAttribute("aria-invalid"') && js.includes('removeAttribute("aria-invalid")'));
+conferir("aviso e lido por inteiro", /id="toast"[^>]*aria-atomic="true"/.test(html));
+
 const obrigatorios = (telas.match(/ required/g) || []).length;
 conferir("campos obrigatorios marcados com required", obrigatorios >= 6, String(obrigatorios) + " campos");
 
