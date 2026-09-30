@@ -65,6 +65,7 @@ App.app = (function () {
       conteudo.innerHTML = App.telas.naoEncontrado(caminho);
       document.title = "Página não encontrada";
       marcarLink(null);
+      conteudo.focus();
       return;
     }
 
@@ -75,6 +76,9 @@ App.app = (function () {
     document.title = rota.titulo + " | Sementes do Amanhã";
     marcarLink(caminho);
     window.scrollTo(0, 0);
+
+    /* Leva o foco (e o leitor de tela) para o conteudo novo */
+    conteudo.focus();
   }
 
   /* Marca no menu o link da tela que está aberta */

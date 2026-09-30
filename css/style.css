@@ -55,6 +55,28 @@ h2 {
   --bs-btn-focus-shadow-rgb: 28, 107, 71;
 }
 
+/* Fica fora da tela e aparece quando recebe foco pelo teclado */
+.pular-navegacao {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1100;
+  padding: 0.5rem 1rem;
+  background-color: var(--verde);
+  color: #fff;
+}
+
+.pular-navegacao:focus {
+  left: 0;
+}
+
+/* O conteudo recebe foco a cada troca de tela; o contorno aparece so quando
+   a navegacao veio do teclado, para nao poluir quem usa o mouse. */
+#app:focus-visible {
+  outline: 2px solid var(--verde);
+  outline-offset: 0.25rem;
+}
+
 fieldset {
   border: 1px solid var(--borda);
   border-radius: 0.5rem;
