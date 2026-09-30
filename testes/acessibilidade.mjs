@@ -56,17 +56,46 @@ function montarPagina(rota) {
     'window.addEventListener("load", function () {',
     '  window.location.hash = "' + rota + '";',
     "  setTimeout(function () {",
+    "    var linhas = [];",
+    "",
+    "    /* ordem de foco: quem aparece primeiro e quem tem tabindex positivo */",
+    '    var candidatos = document.querySelectorAll("a[href], button, input, select, textarea, [tabindex]");',
+    "    var focaveis = Array.prototype.filter.call(candidatos, function (el) {",
+    '      return el.tabIndex >= 0 && !el.disabled && el.offsetParent !== null;',
+    "    });",
+    "",
+    "    function nome(el) {",
+    '      if (!el) { return "nenhum"; }',
+    '      var classe = typeof el.className === "string" ? "." + el.className.split(" ")[0] : "";',
+    '      return el.tagName.toLowerCase() + (el.id ? "#" + el.id : "") + classe;',
+    "    }",
+    "",
+    '    var positivos = focaveis.filter(function (el) { return el.tabIndex > 0; });',
+    "",
+    '    linhas.push("TECLADO | primeiro: " + nome(focaveis[0]));',
+    '    linhas.push("TECLADO | ordem: " + focaveis.slice(0, 6).map(nome).join(" > "));',
+    '    linhas.push("TECLADO | tabindex positivo: " + positivos.length);',
+    '    linhas.push("TECLADO | elementos focaveis: " + focaveis.length);',
+    "",
     '    axe.run(document, { runOnly: { type: "tag", values: ' + JSON.stringify(REGRAS) + " } })",
     "      .then(function (r) {",
+    "        r.violations.forEach(function (v) {",
+    '          linhas.push("AXE | " + v.impact + " | " + v.id + " | " + v.help + " | " +',
+    '                      v.nodes.map(function (n) { return n.target.join(" "); }).join(" ; "));',
+    "        });",
+    '        linhas.push(r.violations.length ? "" : "AXE | SEM VIOLACOES");',
     '        var pre = document.createElement("pre");',
     '        pre.id = "axe";',
-    "        pre.textContent = r.violations.map(function (v) {",
-    '          return v.impact + " | " + v.id + " | " + v.help + " | " +',
-    '                 v.nodes.map(function (n) { return n.target.join(" "); }).join(" ; ");',
-    '        }).join("\\n") || "SEM VIOLACOES";',
+    '        pre.textContent = linhas.join("\\n");',
     "        document.body.appendChild(pre);",
     "      })",
-    '      .catch(function (e) { pre.textContent = "ERRO: " + e.message; });',
+    "      .catch(function (e) {",
+    '        linhas.push("AXE | ERRO: " + e.message);',
+    '        var pre = document.createElement("pre");',
+    '        pre.id = "axe";',
+    '        pre.textContent = linhas.join("\\n");',
+    "        document.body.appendChild(pre);",
+    "      });",
     "  }, 600);",
     "});",
     "</script>",
@@ -99,7 +128,17 @@ try {
     console.log("\n" + rota);
     console.log(resultado.split("\n").map((linha) => "  " + linha).join("\n"));
 
-    if (resultado !== "SEM VIOLACOES") { comProblema += 1; }
+    /* a rota passa quando nao ha violacao do axe, o primeiro foco e o link de
+       pular e nenhum elemento tem tabindex positivo */
+    const semViolacao = !/^AXE \| (?!SEM)/m.test(resultado);
+    const focoCerto = resultado.includes("TECLADO | primeiro: a.pular-navegacao");
+    const semTabindexPositivo = resultado.includes("TECLADO | tabindex positivo: 0");
+
+    if (!semViolacao) { console.log("  -> violacoes de acessibilidade"); }
+    if (!focoCerto) { console.log("  -> o primeiro elemento focavel nao e o link de pular"); }
+    if (!semTabindexPositivo) { console.log("  -> existe tabindex positivo na pagina"); }
+
+    if (!semViolacao || !focoCerto || !semTabindexPositivo) { comProblema += 1; }
   }
 } finally {
   await rm(temporario, { force: true });
