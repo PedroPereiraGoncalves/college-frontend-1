@@ -40,6 +40,31 @@ A primeira execução acusou duas falhas de contraste, as duas de nível AA (WCA
 
 O link de pular aparece no primeiro <kbd>Tab</kbd> e leva direto ao conteúdo — a captura `capturas/05-foco-teclado.png` mostra o estado.
 
+## Modos de cor
+
+A aplicação tem **tema claro e tema escuro**, trocados pelo botão na barra de navegação. A técnica usa o `data-bs-theme` do Bootstrap 5.3, que troca as variáveis de todos os componentes; o que o projeto faz é redefinir a própria paleta dentro de `[data-bs-theme="dark"]`.
+
+Três detalhes da implementação:
+
+1. a cor de marca virou **duas**: `--verde` para fundo de barra, rodapé, botão e badge, e `--verde-texto` para títulos, legend e botões de contorno. No modo claro elas coincidem; no escuro precisam ser bem diferentes, porque verde escuro sobre fundo escuro não passa em contraste;
+2. a escolha fica no `localStorage` (`sementes:tema`) e vale mais que a preferência do sistema; sem escolha salva, o app respeita o `prefers-color-scheme` do sistema operacional;
+3. um script pequeno no `<head>` aplica o tema **antes da primeira pintura**, para não aparecer um flash branco em quem usa o modo escuro.
+
+Rácios medidos (fórmula de contraste da WCAG 2.1, conferidos pelo axe):
+
+| Elemento | Modo claro | Modo escuro | Exigido |
+| --- | --- | --- | --- |
+| Texto principal | 14,97:1 | 15,28:1 | 4,5:1 |
+| Títulos e legend | 6,16:1 | 9,87:1 | 4,5:1 |
+| Links do menu | 6,47:1 | 6,18:1 | 4,5:1 |
+| Botão primário | 6,47:1 | 6,18:1 | 4,5:1 |
+| Botão de contorno | 6,16:1 | 9,87:1 | 4,5:1 |
+| Texto nos cartões | 15,75:1 | 13,89:1 | 4,5:1 |
+| Rodapé | 6,47:1 | 6,18:1 | 4,5:1 |
+| Mensagem de erro | 4,53:1 | 6,49:1 | 4,5:1 |
+
+A auditoria do axe roda nas três rotas **nos dois temas** (seis combinações) e não encontra violação em nenhuma.
+
 ## Limitações conhecidas
 
 - A auditoria é **automática**: regras como "a ordem de foco faz sentido" foram conferidas por inspeção, não por teste.

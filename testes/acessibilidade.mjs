@@ -34,6 +34,7 @@ if (!navegador) {
 }
 
 const ROTAS = ["/inicio", "/cadastro", "/cadastros"];
+const TEMAS = ["claro", "escuro"];
 const REGRAS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"];
 
 const axe = await readFile(path.join(raiz, "node_modules/axe-core/axe.min.js"), "utf8");
@@ -49,11 +50,12 @@ function escaparHtml(texto) {
     .replace(/&amp;/g, "&");
 }
 
-function montarPagina(rota) {
+function montarPagina(rota, tema) {
   const script = [
     "<script>" + axe + "</script>",
     "<script>",
     'window.addEventListener("load", function () {',
+    '  document.documentElement.setAttribute("data-bs-theme", "' + (tema === "escuro" ? "dark" : "light") + '");',
     '  window.location.hash = "' + rota + '";',
     "  setTimeout(function () {",
     "    var linhas = [];",
@@ -109,7 +111,8 @@ let comProblema = 0;
 
 try {
   for (const rota of ROTAS) {
-    await writeFile(temporario, montarPagina(rota));
+   for (const tema of TEMAS) {
+    await writeFile(temporario, montarPagina(rota, tema));
 
     const { stdout } = await executar(navegador, [
       "--headless",
@@ -125,7 +128,7 @@ try {
     const achado = stdout.match(/<pre id="axe">([\s\S]*?)<\/pre>/);
     const resultado = achado ? escaparHtml(achado[1]) : "NAO RODOU";
 
-    console.log("\n" + rota);
+    console.log("\n" + rota + " (" + tema + ")");
     console.log(resultado.split("\n").map((linha) => "  " + linha).join("\n"));
 
     /* a rota passa quando nao ha violacao do axe, o primeiro foco e o link de
@@ -139,6 +142,7 @@ try {
     if (!semTabindexPositivo) { console.log("  -> existe tabindex positivo na pagina"); }
 
     if (!semViolacao || !focoCerto || !semTabindexPositivo) { comProblema += 1; }
+   }
   }
 } finally {
   await rm(temporario, { force: true });
@@ -146,7 +150,7 @@ try {
 }
 
 console.log(comProblema
-  ? "\n" + comProblema + " rota(s) com violacoes"
-  : "\nnenhuma violacao de WCAG 2.1 A/AA nas rotas testadas");
+  ? "\n" + comProblema + " combinacao(oes) de rota e tema com problema"
+  : "\nnenhuma violacao de WCAG 2.1 A/AA nas rotas, nos dois temas");
 
 process.exit(comProblema ? 1 : 0);

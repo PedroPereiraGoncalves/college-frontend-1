@@ -4,6 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Instituto Sementes do Amanhã</title>
+  <!-- Aplica o tema escolhido antes da primeira pintura, para não piscar branco -->
+  <script>
+    (function () {
+      var salvo = null;
+
+      try { salvo = window.localStorage.getItem("sementes:tema"); } catch (erro) { salvo = null; }
+
+      var escuro = salvo ? salvo === "escuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      document.documentElement.setAttribute("data-bs-theme", escuro ? "dark" : "light");
+    })();
+  </script>
+
   <link rel="stylesheet" href="../css/bootstrap.min.css">
   <link rel="stylesheet" href="../css/style.css">
 </head>
@@ -28,6 +41,8 @@
             <li class="nav-item"><a class="nav-link" href="#/cadastro">Quero participar</a></li>
             <li class="nav-item"><a class="nav-link" href="#/cadastros">Cadastros salvos</a></li>
           </ul>
+
+          <button class="btn btn-sm btn-outline-light mt-3 mt-md-0 ms-md-3" type="button" id="botao-tema" aria-pressed="false">Modo escuro</button>
         </div>
       </div>
     </nav>
