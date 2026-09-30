@@ -46,7 +46,10 @@ App.telas = (function () {
           <a class="btn btn-primary" href="#/cadastro">Quero participar</a>
         </div>
         <div class="col-12 col-md-5">
-          <img class="img-fluid rounded" src="../img/imagem-ong.jpg" alt="Voluntários plantando mudas na horta comunitária." width="600" height="300">
+          <picture>
+            <source srcset="../img/imagem-ong.webp" type="image/webp">
+            <img class="img-fluid rounded" src="../img/imagem-ong.jpg" alt="Voluntários plantando mudas na horta comunitária." width="600" height="300" decoding="async">
+          </picture>
         </div>
       </div>
 
